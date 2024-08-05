@@ -49,15 +49,14 @@ const { city, state } = feature;
 const getSimilarProperties = await findSimilarProperties(city, state);
 // Process the property data to top 5 similar properties
 const processedData = processPropertyData(getSimilarProperties);
-// ranking similar properties
+// ranking similar properties using OpenAI
 const rankedProperties = await rankProperties(processedData, feature);
  // Estimate property value using OpenAI
-const similarProperties = rankedProperties.length === 0 ? processedData : rankedProperties;
-const estimatedValue = await getEstimatedValue(feature, similarProperties);
+const estimatedValue = await getEstimatedValue(feature, rankedProperties);
 
   res.send({
     estimatedValue,
-    similarProperties
+    rankedProperties,
   });
 });
 

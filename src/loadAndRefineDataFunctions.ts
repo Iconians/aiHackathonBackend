@@ -1,21 +1,8 @@
 import fs from 'fs';
 import csv from 'csv-parser';
 import path from 'path';
+import { propertyDataType } from '../types';
 
-type propertyDataType = {
-  brokered_by: string,
-  status: string,
-  price: string,
-  bed: string,
-  bath: string,
-  acre_lot: string,
-  street: string,
-  city: string,
-  state: string,
-  zip_code: string,
-  house_size: string,
-  prev_sold_date: string,
-}
 
 const data: propertyDataType[] = []; // Array to store the data from the CSV file
 
