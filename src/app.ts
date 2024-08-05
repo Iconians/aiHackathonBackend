@@ -1,7 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { findSimilarProperties, loadDataSet } from './data';
-import { processPropertyData } from './queryAnalysis';
+import { findSimilarProperties, loadDataSet, processPropertyData } from './loadAndRefineDataFunctions';
 import { getEstimatedValue, rankProperties } from './openAi';
 
 const app = express();
@@ -45,17 +44,16 @@ app.get('/form', (req, res) => {
 
 app.post('/estimate', async (req, res) => {
 const feature = req.body;
-// console.log("feature",feature)
 const { city, state } = feature;
-const processedData = await processPropertyData(feature);
  // Get similar properties from the dataset
 const getSimilarProperties = await findSimilarProperties(city, state);
+// Process the property data to top 5 similar properties
+const processedData = processPropertyData(getSimilarProperties);
 // ranking similar properties
-const rankedProperties = await rankProperties(getSimilarProperties, processedData);
+const rankedProperties = await rankProperties(processedData, feature);
  // Estimate property value using OpenAI
- console.log("rankedProperties",rankedProperties)
-const similarProperties = rankedProperties.length === 0 ? getSimilarProperties : rankedProperties;
-const estimatedValue = await getEstimatedValue(processedData, similarProperties);
+const similarProperties = rankedProperties.length === 0 ? processedData : rankedProperties;
+const estimatedValue = await getEstimatedValue(feature, similarProperties);
 
   res.send({
     estimatedValue,
