@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { findSimilarProperties, loadDataSet, processPropertyData } from './loadAndRefineDataFunctions';
 import { getEstimatedValue, rankProperties } from './openAi';
+import cors from 'cors';
 
 const app = express();
 const PORT = 3000;
@@ -13,6 +14,7 @@ loadDataSet().then(() => {
 });
 
 app.use(bodyParser.json());
+app.use(cors())
 
 app.use(express.urlencoded({ extended: true }));
 
