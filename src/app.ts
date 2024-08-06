@@ -14,32 +14,30 @@ loadDataSet().then(() => {
 
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.send('Welcome to the property valuation tool');
-});
-
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/form', (req, res) => {
+app.get('/', (req, res) => {
   res.send(`
+    <h1>Welcome to the property valuation tool</h1>
+    <br/>
     <form action="/estimate" method="post">
-      <label for="location">City:</label>
-      <input type="text" id="city" name="city"><br><br>
-      <label for="state">State:</label>
-      <input type="text" id="state" name="state"><br><br>
-      <label for="size">Size (sq ft):</label>
-      <input type="text" id="size" name="size"><br><br>
-      <label for="rooms">Number of rooms:</label>
-      <input type="text" id="rooms" name="rooms"><br><br>
-      <label for="condition">Condition of property:</label>
-      <input type="text" id="condition" name="condition"><br><br>
-      <label for="bath">Number of baths:</label>
-      <input type="text" id="bath" name="bath"><br><br>
-      <label for="rooms">acreage:</label>
-      <input type="text" id="acre_lot" name="acre_lot"><br><br>
-      <button type="submit">Estimate Value</button>
-    </form>
-  `);
+    <label for="location">City:</label>
+    <input type="text" id="city" name="city"><br><br>
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state"><br><br>
+    <label for="size">Size (sq ft):</label>
+    <input type="text" id="size" name="size"><br><br>
+    <label for="rooms">Number of rooms:</label>
+    <input type="text" id="rooms" name="rooms"><br><br>
+    <label for="condition">Condition of property:</label>
+    <input type="text" id="condition" name="condition"><br><br>
+    <label for="bath">Number of baths:</label>
+    <input type="text" id="bath" name="bath"><br><br>
+    <label for="rooms">acreage:</label>
+    <input type="text" id="acre_lot" name="acre_lot"><br><br>
+    <button type="submit">Estimate Value</button>
+  </form>
+    `);
 });
 
 app.post('/estimate', async (req, res) => {
@@ -57,7 +55,7 @@ const estimatedValue = await getEstimatedValue(feature, rankedProperties);
   res.send({
     estimatedValue,
     rankedProperties,
-  });
+});
 });
 
 app.listen(PORT, () => {
